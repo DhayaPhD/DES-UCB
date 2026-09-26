@@ -1,0 +1,232 @@
+{
+  "sanity_oracle": {
+    "claim": "sanity_oracle",
+    "description": "oracle expected reward >= every agent's expected reward, every round",
+    "verdict": "SUPPORTED",
+    "stats": {
+      "min_per_round_regret": 0.0,
+      "regret_B9": 0.0,
+      "regret_min_other": 24.703222881348186
+    }
+  },
+  "suppression": {
+    "claim": "suppression",
+    "description": "dyn_regret[DES] < dyn_regret[A2 no_suppression] on abrupt drift with a stale (pre-drift) prior",
+    "verdict": "SUPPORTED",
+    "stats": {
+      "regret_DES": 24.703222881348186,
+      "regret_A2": 78.00381429681731,
+      "mean_diff": -53.300591415469086,
+      "cl_lo": -55.62852723751748,
+      "cl_hi": -51.17224664508306,
+      "flat_lo": -54.97918341636722,
+      "flat_hi": -51.55174305996145,
+      "seed_lo": -55.20816129834551,
+      "seed_hi": -51.39302153259268,
+      "n_units": 1000,
+      "n_seeds": 10,
+      "detector_mean_delay": 8.993486973947896,
+      "detected_events": 1996,
+      "n_change_events": 2000,
+      "detected_fraction": 0.998
+    }
+  },
+  "stale_ratio": {
+    "claim": "stale_ratio",
+    "description": "post-change rounds conditioned on a prior-carrying source (P or C): DES < A2",
+    "verdict": "SUPPORTED",
+    "stats": {
+      "stale_DES": 0.0018000000000000002,
+      "stale_A2": 0.026135000000000002,
+      "mean_diff": -0.024335000000000002,
+      "cl_lo": -0.025465089285714282,
+      "cl_hi": -0.02306492857142857,
+      "flat_lo": -0.025183660714285714,
+      "flat_hi": -0.023484125,
+      "seed_lo": -0.025367625541826647,
+      "seed_hi": -0.02330237445817335,
+      "n_units": 1000,
+      "n_seeds": 10
+    }
+  },
+  "not_redundant": {
+    "claim": "not_redundant",
+    "description": "purge+reset+burn-in beats passive decay of the prior (A5)",
+    "verdict": "SUPPORTED",
+    "stats": {
+      "regret_DES": 24.703222881348186,
+      "regret_A5_decay": 72.99064518904616,
+      "mean_diff": -48.28742230769798,
+      "cl_lo": -50.46593108618095,
+      "cl_hi": -46.2767715644976,
+      "flat_lo": -49.99338060591759,
+      "flat_hi": -46.50278568011952,
+      "seed_lo": -49.76780353075904,
+      "seed_hi": -46.80704108463692,
+      "n_units": 1000,
+      "n_seeds": 10
+    }
+  },
+  "restart_not_redundant": {
+    "claim": "restart_not_redundant",
+    "description": "evidence switching + purge beats a detector-triggered full restart (B6) on abrupt drift with a stale prior",
+    "verdict": "SUPPORTED",
+    "stats": {
+      "regret_DES": 24.703222881348186,
+      "regret_B6": 31.294409120328027,
+      "mean_diff": -6.591186238979798,
+      "cl_lo": -7.058644655052552,
+      "cl_hi": -6.079441604834795,
+      "flat_lo": -6.9392594401041565,
+      "flat_hi": -6.221636010094884,
+      "seed_lo": -6.995061575966535,
+      "seed_hi": -6.187310901993063,
+      "n_units": 1000,
+      "n_seeds": 10
+    }
+  },
+  "recent_baselines": {
+    "claim": "recent_baselines",
+    "description": "DES-UCB beats the matched detection-augmented (B10) and periodic-restart (B11) LinUCB baselines on abrupt drift",
+    "verdict": "SUPPORTED",
+    "stats": {
+      "regret_DES": 24.703222881348186,
+      "regret_B10": 158.52194292527378,
+      "regret_B11": 82.30593989606386,
+      "B10_mean_diff": -133.8187200439258,
+      "B10_cl_lo": -137.3260623083799,
+      "B10_cl_hi": -130.446135200027,
+      "B10_flat_lo": -136.4702442795802,
+      "B10_flat_hi": -131.03390478285357,
+      "B10_seed_lo": -136.54372242818565,
+      "B10_seed_hi": -131.09371765966594,
+      "B10_n_units": 1000,
+      "B10_n_seeds": 10,
+      "B11_mean_diff": -57.602717014715715,
+      "B11_cl_lo": -59.07091993180941,
+      "B11_cl_hi": -56.21787290344428,
+      "B11_flat_lo": -58.79424572635138,
+      "B11_flat_hi": -56.40056270946764,
+      "B11_seed_lo": -58.596059753766085,
+      "B11_seed_hi": -56.60937427566536,
+      "B11_n_units": 1000,
+      "B11_n_seeds": 10
+    }
+  },
+  "recurring_not_redundant": {
+    "claim": "recurring_not_redundant",
+    "description": "DES-UCB beats the detector-triggered restart (B6) on recurring drift with a stale prior",
+    "verdict": "SUPPORTED",
+    "stats": {
+      "regret_DES": 30.892920072932597,
+      "regret_B6": 39.28813070220561,
+      "regret_A5": 68.37945518447447,
+      "regret_B10": 113.37250518503257,
+      "regret_B11": 96.76056835771158,
+      "mean_diff": -8.395210629273006,
+      "cl_lo": -8.87542076925362,
+      "cl_hi": -7.934790082525142,
+      "flat_lo": -8.74054898036581,
+      "flat_hi": -8.064845592763458,
+      "seed_lo": -8.78673320643883,
+      "seed_hi": -8.003688052107181,
+      "n_units": 1000,
+      "n_seeds": 10
+    }
+  },
+  "suppression_mis": {
+    "claim": "suppression_mis",
+    "description": "same as `suppression` under p_mismatch=0.2 with a population (not pre-drift) prior",
+    "verdict": "SUPPORTED",
+    "stats": {
+      "regret_DES": 36.91761577261893,
+      "regret_A2": 82.39446390566216,
+      "mean_diff": -45.47684813304328,
+      "cl_lo": -47.547207118760255,
+      "cl_hi": -43.39367697882325,
+      "flat_lo": -47.129873487175075,
+      "flat_hi": -43.84462872327335,
+      "seed_lo": -47.06038406698302,
+      "seed_hi": -43.89331219910355,
+      "n_units": 1000,
+      "n_seeds": 10
+    }
+  },
+  "misleading_prior": {
+    "claim": "misleading_prior",
+    "description": "misleading (negated) post-drift prior: purge+reset+burn-in beats passive decay (A5), clustered CI",
+    "verdict": "SUPPORTED",
+    "stats": {
+      "regret_DES": 14.525303616444388,
+      "regret_A5_decay": 426.9964806679975,
+      "regret_A2": 439.0043427159449,
+      "regret_B6": 16.76439184197399,
+      "regret_B2": 847.0972746983638,
+      "regret_B10": 804.4460910438906,
+      "regret_B11": 368.536230603088,
+      "mean_diff": -412.4711770515529,
+      "cl_lo": -422.37708661156495,
+      "cl_hi": -402.3566191003659,
+      "flat_lo": -419.04702119988707,
+      "flat_hi": -405.8128507574157,
+      "seed_lo": -421.3556785552165,
+      "seed_hi": -403.5866755478894,
+      "n_units": 1000,
+      "n_seeds": 10,
+      "mean_diff_vs_A2": -424.47903909950065,
+      "cl_excl0_vs_A2": true
+    }
+  },
+  "no_harm": {
+    "claim": "no_harm",
+    "description": "dyn_regret[DES] <= 1.10 * dyn_regret[B2 warm LinUCB] with no drift",
+    "verdict": "NOT SUPPORTED",
+    "stats": {
+      "regret_DES": 2.1176628101563,
+      "regret_B2": 1.6605261919545458,
+      "ratio": 1.2752962406836084,
+      "regret_A9_no_gate": 1.9929809168197712,
+      "regret_A8_no_pooled": 7.285553306725725,
+      "regret_B6": 8.326390838384187,
+      "regret_B10": 19.939988239089658,
+      "regret_B11": 8.89093359171695,
+      "F_fraction_DES": 0.877462,
+      "agreed_share_DES": 0.8743219971656799,
+      "false_alarms_DES": 72
+    }
+  },
+  "rate": {
+    "claim": "rate",
+    "description": "log-log regret slope on sinusoidal drift: DES <= B4 + 0.05",
+    "verdict": "SUPPORTED",
+    "stats": {
+      "slope_DES": 1.0365863632357886,
+      "slope_B4": 1.2046797943115721,
+      "checkpoints": [
+        250,
+        500,
+        1000,
+        2000,
+        4000
+      ]
+    }
+  },
+  "real_precision": {
+    "claim": "real_precision",
+    "description": "ML-1M protocol B: cum_precision@40[DES] >= cum_precision@40[B2]",
+    "verdict": "NOT SUPPORTED",
+    "stats": {
+      "cum_precision@40_DES": 0.7179378531073446,
+      "cum_precision@40_B2": 0.7493785310734464,
+      "mean_diff": -0.03144067796610169,
+      "cl_lo": -0.034774717514124295,
+      "cl_hi": -0.028050847457627117,
+      "flat_lo": -0.03463347457627119,
+      "flat_hi": -0.028247175141242944,
+      "seed_lo": -0.03563526214055867,
+      "seed_hi": -0.02724609379164473,
+      "n_units": 885,
+      "n_seeds": 3
+    }
+  }
+}

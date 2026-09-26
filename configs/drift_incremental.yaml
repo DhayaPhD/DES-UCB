@@ -1,0 +1,4 @@
+# Overrides default.yaml for drift type "incremental".
+drift:
+  type: incremental
+  incremental_eps: 0.01

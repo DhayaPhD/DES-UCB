@@ -1,0 +1,4 @@
+# Overrides default.yaml for drift type "sinusoidal".
+drift:
+  type: sinusoidal
+  sinusoidal_period: 500

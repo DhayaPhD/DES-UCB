@@ -1,0 +1,4 @@
+# Overrides default.yaml for drift type "none".
+drift:
+  type: none
+  change_points: []

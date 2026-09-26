@@ -1,0 +1,110 @@
+# DES-UCB default configuration (spec section 15).
+seed: 0
+n_seeds: 5
+n_users: 100
+T: 2000
+d: 16
+N_items: 500
+K_cand: 20
+lam: 1.0
+beta: 0.5
+S: 5.0
+switch:
+  kind: hedge       # hedge (default, full-information) | exp3 (ablation A10) | ucb1 (ablation A7)
+  sources: [C, F]   # C = prior rows pooled with every live row since the last purge, F = feedback only
+  gate: true        # no switch decision (and no exploration) when every source picks the same arm
+  eta: 2.0          # hedge learning rate (tuned)
+  gamma: 0.0        # exploration floor; hedge has full information and needs none (exp3 uses 0.05)
+  exp3_gamma: 0.05  # exploration floor used when kind = exp3 (ablation A10)
+  c: 1.0
+  G: 1.0
+alpha_prior_mix: 0.0
+purge_keep: 0       # rows of F kept after a detected drift (0 = restart F; 'half' = halve the window)
+w_0: 100000         # F never forgets between detected drifts unless BOB selects a shorter window
+w_min: 50
+candidate_windows: [100, 400, 1600, 100000]
+H: 100
+bob_gamma: 0.1
+burn_in_B: 30
+reward_range: [-2.0, 2.0]   # used to map block rewards into [0,1] for BOB's EXP3
+detector:
+  type: page_hinkley   # page_hinkley | adwin
+  delta: 0.005
+  # Spec default was 50; the pilot (notebook §6) showed 0/20 firings at 50 on squared residuals of
+  # rewards with sigma_reward=0.1 -> decision-table branch "DETECTION FAILURE: tune PH threshold,
+  # retest". Retuned to 1.0: 20/20 detected, mean delay 24.5 < burn_in_B, 0 false alarms on drift=none.
+  lam_threshold: 1.0
+  alpha_forget: 0.999
+  min_instances: 30
+prior:
+  K_cohorts: 8
+  n_prior_rows: 200
+  sigma_prior: 0.1
+  p_mismatch: 0.0
+  prior_from_pre_drift: true
+drift:
+  type: abrupt          # none | abrupt | gradual | recurring | incremental | sinusoidal
+  change_points: [600, 1300]
+  magnitude: 1.0
+  direction: random     # random | reverse (theta_1 = theta_0 - magnitude * theta_0: misleading prior)
+  sigma_reward: 0.1
+  reward_model: gaussian   # gaussian | bernoulli
+  gradual_G: 300
+  recurring_P: 500
+  incremental_eps: 0.01
+  sinusoidal_period: 500
+baselines:
+  sw_window: 400          # B3 fixed sliding window
+  discount_gamma: 0.995   # B5 discounted LinUCB
+  ph_restart_lam_threshold: null   # B6 Page-Hinkley threshold (null = same as detector.lam_threshold)
+  bob_gamma: null                  # B4 EXP3 rate over windows (null = bob_gamma above)
+  dal_alpha: 0.1                   # B10 forced-exploration rate (DAL / DAB style detection-augmented LinUCB)
+  dal_glr_threshold: 5.0           # B10 GLR mean-change threshold on the forced-round residuals
+  dal_min_len: 10                  # B10 minimum segment length of the GLR split
+  restart_period: 500              # B11 periodic-restart LinUCB (Zhao et al. 2020 schedule)
+# Tuning protocol (notebook section 6b).  Every method is tuned on the same tuning seeds, which are
+# disjoint from the evaluation seeds 0..n_seeds-1, on the regimes listed below (no drift and abrupt
+# drift with a stale prior), by the same criterion (lowest mean, over regimes, of the regret relative
+# to the best grid point of that regime).  The selected values are written to
+# results/tuning_selected.json and applied to every later experiment.
+tuning:
+  seeds: [100, 101]
+  n_users: 20
+  T: 2000
+  regimes: [none, abrupt]   # criterion = mean over regimes of regret / best regret in that regime
+  grids:
+    DES-UCB: {detector.lam_threshold: [0.5, 1.0, 2.0], switch.eta: [1.0, 2.0, 4.0, 8.0]}
+    B3:      {baselines.sw_window: [50, 100, 200, 400, 800]}
+    B4:      {baselines.bob_gamma: [0.05, 0.1, 0.2]}
+    B5:      {baselines.discount_gamma: [0.98, 0.99, 0.995, 0.999]}
+    B6:      {baselines.ph_restart_lam_threshold: [0.25, 0.5, 1.0, 2.0, 5.0]}
+    B10:     {baselines.dal_alpha: [0.02, 0.05, 0.1], baselines.dal_glr_threshold: [2.0, 5.0, 10.0]}
+    B11:     {baselines.restart_period: [100, 200, 500, 1000]}
+datasets:
+  movielens_1m: true
+  movielens_100k_smoke: true
+  mind_small: true
+  netflix: false
+  yahoo_r6_path: null
+  amazon_2023: false
+  kuairand: true          # KuaiRand-Pure is fetched from Zenodo (record 10439422, CC BY-SA 4.0, ~47 MB)
+  kuairand_path: null     # optional local KuaiRand-Pure/data directory (skips the download)
+  kuairand_K: 10          # candidate-set size = first K random exposures of a (user, day) group
+  replay_n_units: 10      # replay stream is cut into this many consecutive segments (units)
+  replay_T: 2000          # rounds per segment
+  netflix_path: null
+# Per-experiment sizes.  The claim registry (section 13) uses the full n_seeds x n_users x T
+# above; the exploratory grids below are scaled down so that "Restart & Run All" fits the
+# 30-minute laptop budget.  Every number here is a *configuration*, not a result.
+experiments:
+  pilot:      {n_seeds: 1, n_users: 20,  T: 1000, change_points: [500]}
+  grid:       {n_seeds: 2, n_users: 30,  T: 2000}
+  ablation:   {n_seeds: 2, n_users: 30,  T: 2000}
+  sweep:      {n_seeds: 3, n_users: 20,  T: 1500}
+  phase:      {n_seeds: 3, n_users: 20,  T: 1500,
+               magnitudes: [0.25, 0.5, 1.0, 2.0], n_prior_rows: [25, 50, 100, 200, 400]}
+  rate:       {n_seeds: 3, n_users: 20,  T: 4000, checkpoints: [250, 500, 1000, 2000, 4000]}
+  claims:     {n_seeds: 10, n_users: 100, T: 2000}
+  diagnostics: {n_seeds: 3, n_users: 30, T: 2000}
+  real:       {n_seeds: 3}
+n_jobs: -1   # multiprocessing workers (-1 = all cores)

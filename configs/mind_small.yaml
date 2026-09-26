@@ -1,0 +1,15 @@
+# MIND-small (spec 6b).  d = svd_dim TF-IDF(title)->SVD + category one-hot.
+dataset: mind_small
+svd_dim: 32
+min_impressions: 20
+T: 20
+max_test_users: 300
+n_prior_rows: 200
+reward_range: [0.0, 1.0]
+mirror: huggingface   # official Azure blob refuses anonymous access; see loader docstring
+w_0: 10
+w_min: 3
+candidate_windows: [3, 5, 10, 20]
+H: 5
+burn_in_B: 3
+detector: {type: page_hinkley, delta: 0.005, lam_threshold: 1.0, alpha_forget: 0.999, min_instances: 3}

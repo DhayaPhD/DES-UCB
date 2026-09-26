@@ -1,0 +1,4 @@
+# Yahoo! R6 (spec 6d, OPTIONAL, local path only).  Replay estimator.
+dataset: yahoo_r6
+d: 6
+max_rounds: 200000

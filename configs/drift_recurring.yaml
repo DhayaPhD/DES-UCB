@@ -1,0 +1,4 @@
+# Overrides default.yaml for drift type "recurring".
+drift:
+  type: recurring
+  recurring_P: 500

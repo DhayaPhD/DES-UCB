@@ -1,0 +1,5 @@
+# Overrides default.yaml for drift type "gradual".
+drift:
+  type: gradual
+  change_points: [600, 1300]
+  gradual_G: 300

@@ -1,0 +1,4 @@
+# KuaiRand (spec 6f, OPTIONAL, local path).  Random-exposure slice, replay estimator.
+dataset: kuairand
+d: 16
+max_rounds: 200000

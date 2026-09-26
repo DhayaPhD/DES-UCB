@@ -1,0 +1,4 @@
+# Amazon Reviews 2023 (spec 6e, OPTIONAL).  ONLY used to build a cross-category D_prior.
+dataset: amazon_2023
+categories: [Books, Movies_and_TV]
+n_prior_rows: 200

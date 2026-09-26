@@ -1,0 +1,20 @@
+# MovieLens 100K smoke-test switch (same protocol as ML-1M, smaller).
+dataset: movielens_100k
+d: 34
+svd_dim: 16
+min_ratings: 100
+split: [0.85, 0.05, 0.10]
+T: 40
+K_cand: 20
+hit_threshold: 4
+cohort_keys: [gender, age]
+protocol_c_p_mismatch: 0.5
+n_prior_rows: 200
+reward_range: [0.0, 1.0]
+max_test_users: 60
+w_0: 20
+w_min: 5
+candidate_windows: [5, 10, 20, 40]
+H: 10
+burn_in_B: 5
+detector: {type: page_hinkley, delta: 0.005, lam_threshold: 1.0, alpha_forget: 0.999, min_instances: 5}

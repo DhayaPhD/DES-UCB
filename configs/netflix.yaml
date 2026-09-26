@@ -1,0 +1,11 @@
+# Netflix Prize (spec 6c, OPTIONAL, gated by datasets.netflix and a local path).
+dataset: netflix
+d: 16
+svd_dim: 16
+min_ratings: 100
+T: 40
+K_cand: 20
+hit_threshold: 4
+n_prior_rows: 200
+max_test_users: 200
+sample_users: 5000
